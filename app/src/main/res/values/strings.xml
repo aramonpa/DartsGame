@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DartsGame</string>
+    <string name="main_title">DartsGame</string>
+    <string name="main_button_text">Empezar</string>
+</resources>
