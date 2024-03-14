@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
     GameLoop gameLoop;
+    DartBoard dartBoard;
     Context context;
     public Game(Context context) {
         super(context);
@@ -19,8 +20,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
-        this.context = context;
-        gameLoop = new GameLoop();
+        gameLoop = new GameLoop(this, surfaceHolder);
+        dartBoard = new DartBoard();
 
         // View focusable for capture events
         setFocusable(true);
@@ -41,26 +42,34 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
+    public void update() {
+        dartBoard.update();
+    }
+
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
         drawUPS(canvas);
         drawFPS(canvas);
+
+        dartBoard.draw(getContext(), canvas);
     }
 
     public void drawUPS(Canvas canvas) {
         String avgNumber = Double.toString(gameLoop.getAverageUPS());
         Paint paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.yellow);
+        int color = ContextCompat.getColor(getContext(), R.color.yellow);
         paint.setColor(color);
-        canvas.drawText("UPS: " + avgNumber, 100, 20, paint);
+        paint.setTextSize(30);
+        canvas.drawText("UPS: " + avgNumber, 100, 100, paint);
     }
 
     public void drawFPS(Canvas canvas) {
         String avgNumber = Double.toString(gameLoop.getAverageFPS());
         Paint paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.yellow);
+        int color = ContextCompat.getColor(getContext(), R.color.yellow);
         paint.setColor(color);
-        canvas.drawText("FPS: " + avgNumber, 100, 40, paint);
+        paint.setTextSize(30);
+        canvas.drawText("FPS: " + avgNumber, 100, 150, paint);
     }
 }
